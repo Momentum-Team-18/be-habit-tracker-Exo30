@@ -12,18 +12,27 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
+import environ
+import os
+
+env = environ.Env(
+    DEBUG=(bool, False),
+)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Take environment variables from .env file
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-^$6j2lnf52dwvk!1m98_r-ch)3nfgn#ccqvt1ev=saqhs*v(2d'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -77,10 +86,22 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    'default': env.db(),
+    'extra': env.db_url(
+
+        )
     }
+        #'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        #'NAME': BASE_DIR / 'db.sqlite3'
+CACHES = {
+    # Read os.environ['CACHE_URL'] and raises
+    # ImproperlyConfigured exception if not found.
+    #
+    # The cache() method is an alias for cache_url().
+    'default': env.cache(),
+
+    # read os.environ['REDIS_URL']
+    'redis': env.cache_url('REDIS_URL')
 }
 
 
@@ -118,7 +139,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = 'core/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # Default primary key field type
