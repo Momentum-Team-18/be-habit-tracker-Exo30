@@ -1,0 +1,12 @@
+h2 {
+    background-color: red
+}
+
+.habit {
+    padding: 100px;
+    background-color: red;
+}
+
+.habit_box {
+    display: flexbox;
+}

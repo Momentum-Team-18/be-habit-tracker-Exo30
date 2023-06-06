@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>This is my hompage</h2>
+{% if user.is_authenticated %}
+<h2>Welcome, {{ user.username }}!</h2>
+{% else %}
+<h2>Login Here: </h2>
+<h2>Or Register Here: </h2>
+{% endif %}
+<a href="{% url 'add_habit'  %}"><button>Add New Habit</button></a>
+<div class="habit_box">
+{% for habit in habit %}
+<a class="habit" href="{% url 'habit_detail' habit.id %}">{{habit}}</a>
+{% endfor %}
+</div>
+{% endblock %}

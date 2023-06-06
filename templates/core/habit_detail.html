@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<a class="delete_button" href="{% url 'delete_habit' habit.pk %}"><button>Delete Habit</button></a>
+<a class="edit_button" href="{% url 'edit_habit' habit.pk %}"><button>Edit Habit</button></a>
+{{habit.name}}
+{{habit.hours}}
+{{habit.done_today}}
+{% endblock %}
