@@ -25,5 +25,10 @@ urlpatterns = [
     path('add_habit/', views.add_habit, name='add_habit'),
     path('habit_detail/<int:pk>', views.habit_detail, name='habit_detail'),
     path('delete_habit/<int:pk>', views.delete_habit, name='delete_habit'),
-    path('edit_habit/<int:pk>', views.edit_habit, name='edit_habit')
+    path('edit_habit/<int:pk>', views.edit_habit, name='edit_habit'),
+    path('habit_detail/<int:pk>/add_tracker/', views.add_tracker, name="add_tracker"),
+    path('habit_detail/<int:pk>/edit_tracker/', views.edit_tracker, name="edit_tracker"),
+    path('habit_detail/<int:pk>/delete_tracker/', views.edit_tracker, name="edit_tracker"),
+    path('habit_detail/<int:pk>/tracker_detail/', views.tracker_detail, name="tracker_detail"),
+    path('account_detail', views.account_detail, name="account_detail")
 ]

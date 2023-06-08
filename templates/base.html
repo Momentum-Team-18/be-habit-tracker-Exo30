@@ -13,7 +13,14 @@
     {% endblock %}
 </head>
 <body>
-    {% block content %}
-    {% endblock %}
+    <header>
+        <a class="logo" href="{% url 'home' %}"><img src="../images/pic.jpg"></a>
+        <div class="title"><h1>Habit B Gone!</h1></div>
+        <a class="account_button" href="{% url 'account_detail' %}"><h2>account</h2></a>
+    </header>
+    <div class="block-div">
+        {% block content %}
+        {% endblock %}
+    </div>
 </body>
 </html>

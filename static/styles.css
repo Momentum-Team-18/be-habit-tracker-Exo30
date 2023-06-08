@@ -1,12 +1,58 @@
-h2 {
-    background-color: red
+
+/*------------------HEADER-------------------*/
+header {
+background-color: rgb(120, 174, 213);
+display:flex;
+justify-content: space-between;
 }
 
-.habit {
-    padding: 100px;
-    background-color: red;
+.logo{
+    margin: 10px;
+    padding-left: 10px;
 }
+
+.title{
+}
+
+.account_button{
+    text-decoration: none;
+    color: black;
+    padding-right: 20px;
+}
+
+.block-div{
+    margin-top: 10px;
+    padding-left: 10px;
+    border: solid
+}
+
+/*----------------MAIN PAGE--------------------*/
+
 
 .habit_box {
-    display: flexbox;
+    margin-top: 50px;
+    margin-left: 50px;
+    margin-bottom: 50px;
+    transition-delay: 2s;
+}
+
+.habit-button, .add_habit_button{
+    font-weight: bold;
+    font-size: larger;
+    background-color: pink;
+    border: none;
+    min-width: fit-content;
+    min-height: fit-content;
+    width: 10rem;
+    height: 4rem;
+    transition: all 0.33s ease-out;
+}
+
+.add_habit_button{
+    background-color: blue;
+}
+
+.habit-button:hover, .add_habit_button:hover {
+    background-color: deeppink;
+    transition: all 0.33s ease-in;
 }

@@ -5,4 +5,11 @@
 {{habit.name}}
 {{habit.hours}}
 {{habit.done_today}}
+
+<a class="add_tracker_button" href="{% url 'add_tracker' habit.pk %}"><button>Add Tracker</button></a>
+{% for tracker in trackers %}
+<a class='tracker_detail_button' href="{% url 'tracker_detail' tracker.id %}">{{tracker.date_completed}}</a>
+{% endfor %}
+
+
 {% endblock %}

@@ -1,5 +1,6 @@
 from django import forms
-from .models import User, Habit
+from .models import User, Habit, Tracker
+from django.utils import timezone
 
 class AddHabitForm(forms.ModelForm):
     class Meta:
@@ -9,4 +10,15 @@ class AddHabitForm(forms.ModelForm):
         #if (Habit.done_today == True):
             #widgets = {'hours': forms.HiddenInput()}
             
-        
+
+class AddTrackerForm(forms.ModelForm):
+    date_completed = forms.DateField(
+        widget=forms.SelectDateWidget(
+            empty_label=('Year', 'Month', 'Day')
+        ), initial=timezone.now(),
+    )
+
+    class Meta: 
+        model = Tracker
+        fields = ("date_completed", "goal_status")
+        labels = {"goal_status": "Hours/Times completed"}
