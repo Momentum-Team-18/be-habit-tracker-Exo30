@@ -33,6 +33,7 @@ class Habit(models.Model):
     target = models.IntegerField(default=False)
     done_today = models.BooleanField(null=True, default=False)
     good_or_bad = models.CharField(max_length=50, choices=habit_choices, default="Good")
+    observers = models.CharField(max_length=50, null=True, blank=True)
 
 
     def __str__(self):
@@ -58,3 +59,18 @@ class Tracker(models.Model):
         result = 0
         result += int(self.date_completed)
         return result
+    
+
+class Comment(models.Model):
+    habit = models.ForeignKey(Habit,on_delete=models.CASCADE,related_name='comments')
+    name = models.CharField(max_length=80, blank=True)
+    email = models.EmailField(blank=True)
+    body = models.TextField()
+    created_on = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['created_on']
+
+    def __str__(self):
+        return 'Comment {} by {}'.format(self.body, self.name)

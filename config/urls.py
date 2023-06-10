@@ -30,5 +30,7 @@ urlpatterns = [
     path('habit_detail/<int:pk>/edit_tracker/', views.edit_tracker, name="edit_tracker"),
     path('habit_detail/<int:pk>/delete_tracker/', views.edit_tracker, name="edit_tracker"),
     path('habit_detail/<int:pk>/tracker_detail/', views.tracker_detail, name="tracker_detail"),
-    path('account_detail', views.account_detail, name="account_detail")
+    path('account_detail', views.account_detail, name="account_detail"),
+    path('habit_detail/<int:pk>/add_observer', views.add_observer, name="add_observer"),
+    path('delete_observer', views.delete_observer, name="delete_observer")
 ]

@@ -28,6 +28,14 @@ justify-content: space-between;
 
 /*----------------MAIN PAGE--------------------*/
 
+.habit_button_div{
+    display:flex;
+    margin-left: 10px;
+}
+
+.delete_button, .edit_button, .add_observer_button {
+    margin: 10px;
+}
 
 .habit_box {
     margin-top: 50px;
@@ -36,7 +44,7 @@ justify-content: space-between;
     transition-delay: 2s;
 }
 
-.habit-button, .add_habit_button, .tracker_detail_button, .edit_button, .delete_button, .add_tracker_button {
+.habit-button, .add_habit_button, .tracker_detail_button, .edit_button, .delete_button, .add_tracker_button, .add_observer_button {
     font-weight: bold;
     font-size: larger;
     background-color: greenyellow;
@@ -52,14 +60,14 @@ justify-content: space-between;
     background-color: pink;
 }
 
-.add_habit_button, .edit_button, .delete_button, .add_tracker_button {
+.add_habit_button, .edit_button, .delete_button, .add_tracker_button, .add_observer_button {
     background-color: rgb(106, 106, 247);
     width: 6rem;
     height: 3rem;
     min-width: 9rem;
 }
 
-.add_habit_button:hover, .edit_button:hover, .delete_button:hover{
+.add_habit_button:hover, .edit_button:hover, .delete_button:hover, .add_observer_button:hover{
     background-color: blue;
     transition: all 0.33s ease-in;
 }
@@ -67,6 +75,7 @@ justify-content: space-between;
 .add_tracker_button{
     background-color: purple;
 }
+
 
 .habit-button:hover, .add_habit_button:hover, .tracker_detail_button:hover, .add_tracker_button:hover {
     background-color: green;
@@ -77,9 +86,34 @@ justify-content: space-between;
     background-color: deeppink;
 }
 
+
+/**------------------------HABIT DETAILS-------------------*/
+.comment_div{
+    margin-left: 20px;
+    border: solid;
+    width: 75%;
+    display:block
+}
+.comment{
+    border: solid;
+}
+.comment-header{
+    padding: 10px 10px 0px 10px;
+    font-weight: bold;
+}
+.comment-body{
+    display: block;
+    border: solid;
+    width:fit-content;
+    margin-left: 20px;
+    padding: 0 10px 0px 10px;
+}
+
+
 /*---------------------Tracker Page-------------*/
 .tracker-div{
     padding-bottom: 10px;
+    background-color: powderblue;
 
 }
 
@@ -87,3 +121,4 @@ justify-content: space-between;
     display: flex;
     padding: 30px;
 }
+

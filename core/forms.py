@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Habit, Tracker
+from .models import User, Habit, Tracker, Comment
 from django.utils import timezone
 
 class AddHabitForm(forms.ModelForm):
@@ -22,3 +22,14 @@ class AddTrackerForm(forms.ModelForm):
         model = Tracker
         fields = ("date_completed", "goal_status")
         labels = {"goal_status": "Hours/Times completed"}
+
+class addObserverForm(forms.ModelForm):
+    class Meta:
+        model = Habit
+        fields = ['observers']
+        labels = {"observers": "Enter the username of who you want to observe your progress:"}
+
+class AddCommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('name', 'email', 'body',)

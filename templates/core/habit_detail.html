@@ -1,35 +1,80 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2 class="habit-name">{{habit.name}} Habit</h2>
 
-<div class="habit_button_div">
-<a href="{% url 'delete_habit' habit.pk %}"><button class="delete_button">Delete Habit</button></a>
-<a href="{% url 'edit_habit' habit.pk %}"><button class="edit_button">Edit Habit</button></a>
-</div>
+
+<h2 class="habit-name">{{habit.name}} Habit</h2>
+{% if current_user == owner %}
+    <div class="habit_button_div">
+    <a href="{% url 'delete_habit' habit.pk %}"><button class="delete_button">Delete Habit</button></a>
+    <a href="{% url 'edit_habit' habit.pk %}"><button class="edit_button">Edit Habit</button></a>
+    <a href="{% url 'add_observer' habit.pk %}"><button class="add_observer_button">Add Observer to Habit</button></a>
+    </div>
+{% endif %}
 
 {% if habit.good_or_bad == "Good" %}
-<h2> Congrats! You've completed {{completed_time}} {{type}}s of this habit!</h2>
-<p>It seems you accomplish this habit most often on {{best_day}}s</p>
+    <h2> Congrats! You've completed {{completed_time}} {{type}}s of this habit!</h2>
+    <p>It seems you accomplish this habit most often on {{best_day}}s</p>
 {% else %}
 
-        <h2> Bummer! You've done {{completed_time}} {{type}}s of this habit!</h2>
-        <p>It seems you do this habit most often on {{best_day}}s</p>
+    <h2> Bummer! You've done {{completed_time}} {{type}}s of this habit!</h2>
+    <p>It seems you do this habit most often on {{best_day}}s</p>
 
 {% endif %}
 
-<div class="tracker-div">
-<a href="{% url 'add_tracker' habit.pk %}"><button class="add_tracker_button">Add Tracker</button></a>
-<div class="tracker-list-div">
-{% for tracker in trackers %}
-{% if tracker.date_completed >= last_week %}
-<a href="{% url 'tracker_detail' tracker.id %}"><button class='tracker_detail_button'>{{ tracker.date_completed|date:"l" }}</button></a>
-{% else %}
-<a href="{% url 'tracker_detail' tracker.id %}"><button class='tracker_detail_button'>{{ tracker.date_completed }}</button></a>
-{% endif %}
 
+    <div class="tracker-div">
+        {% if current_user == owner %}
+        <a href="{% url 'add_tracker' habit.pk %}"><button class="add_tracker_button">Add Tracker</button></a>
+        {% endif %}
+        <div class="tracker-list-div">
+            {% for tracker in trackers %}
+                {% if tracker.date_completed >= last_week %}
+                    <a href="{% url 'tracker_detail' tracker.id %}"><button class='tracker_detail_button'>{{ tracker.date_completed|date:"l" }}</button></a>
+                {% else %}
+                    <a href="{% url 'tracker_detail' tracker.id %}"><button class='tracker_detail_button'>{{ tracker.date_completed }}</button></a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+<br>
+
+<h2>Comments:</h2>
+<div class="comment_div">
+{% for comment in comments %}
+    <div class="comment">
+    <div class="comment-header">
+        <h2>
+            {{ comment.name }} says:
+            </h2>
+            <p>
+            <span class="">
+                {{ comment.created_on }}
+            </span>
+        </p>
+    </div>
+    <div class="comment-body">
+        {{ comment.body | linebreaks }}
+    </div>
+    </div>
+    
 {% endfor %}
+</div>
 
+
+<div class="card-body">
+    {% if new_comment %}
+        <div class="alert alert-success" role="alert">
+        Your comment is awaiting moderation
+        </div>
+    {% else %}
+        <h3>Leave a comment</h3>
+        <form method="post">
+            {{ comment_form.as_p }}
+            {% csrf_token %}
+            <button type="submit" class="">Submit</button>
+        </form>
+    {% endif %}
 </div>
-</div>
+
 
 {% endblock %}

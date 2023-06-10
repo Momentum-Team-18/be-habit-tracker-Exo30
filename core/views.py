@@ -1,21 +1,35 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import User, Habit, Tracker
 from django.contrib.auth.decorators import login_required
-from .forms import AddHabitForm, AddTrackerForm
+from .forms import AddHabitForm, AddTrackerForm, addObserverForm, AddCommentForm
 from datetime import date, timedelta
 import functools
 
+
+#----------------------------------------------MAIN PAGE VIEWS---------------------------------------------
 # Create your views here.
 @login_required
 def index(request):
-    typelist = []
+    observer_dict = {}
+    observer_names= []
+    all_habits = Habit.objects.all()
     habits = Habit.objects.filter(user=request.user).order_by('name')
-    for habit in habits:
-        typelist.append((habit.good_or_bad))
+    observing = Habit.objects.filter(observers=request.user).order_by('user')
+
+    for observer in observing:
+        if (observer_dict):
+            observer_dict[observer.user].append(observer)
+        else: 
+    
+            observer_dict[observer.user] = [observer]
+    
     
     context = {
         'user': request.user,
         'habit': habits,
+        "observers": observing,
+        "dict": observer_dict,
+        "names": observer_names
     }
     return render(request, 'core/index.html', context)
 
@@ -23,6 +37,8 @@ def account_detail(request):
     user = request.user
     return render(request, 'core/account_detail.html', {"user": user})
 
+
+#----------------------------------------------ADD/DELETE/EDIT HABITS---------------------------------------------
 @login_required
 def add_habit(request):
     if request.method == 'POST':
@@ -84,18 +100,60 @@ def best_day(days):
     return weekdays[result]
 
 
+#----------------------------------------------OBSERVER VIEWS---------------------------------------------
+def add_observer(request, pk):
+    user_list = User.objects.all()
+    habit = get_object_or_404(Habit, pk=pk)
+    if (request.method == 'GET'):
+        form = addObserverForm(instance = habit) 
+    else:
+        form = addObserverForm(request.POST, instance = habit)
+        if form.is_valid():
+            form.save()
+            return redirect('habit_detail', habit.pk)
+    return render(request, 'core/add_observer.html', {'form': form, 'user_list': user_list})
+
+def delete_observer(request, pk):
+    pass
+
+
+
+#----------------------------------------------HABIT DETAILS---------------------------------------------
 def habit_detail(request, pk):
+    current_user = request.user.id
     habit = get_object_or_404(Habit, pk=pk)
     trackers = Tracker.objects.filter(habit_id = habit).order_by("-date_completed")
     completed_time = 0
+    owner = habit.user_id
     type = habit.type
+    observers = habit.observers
     days = []
+
     for tracker in trackers:
         completed_time += tracker.goal_status
         days.append(tracker.date_completed)
     current_date = date.today()
     last_week = current_date - timedelta(days=6)
     best = best_day(days)
+
+    new_comment = None
+    comments = habit.comments.filter(active=True)
+    the_requeset = request
+    initial_data = {
+        'name': request.user.username,
+        "email": request.user.email,
+    }
+    if request.method == 'POST':
+        comment_form = AddCommentForm(request.POST, initial=initial_data)
+        if comment_form.is_valid():
+            new_comment = comment_form.save(commit=False)
+            new_comment.habit = habit
+            new_comment.save()
+    else:
+        comment_form = AddCommentForm(initial=initial_data)
+
+ 
+
     context = {
         'habit': habit, 
         "trackers": trackers,
@@ -103,10 +161,19 @@ def habit_detail(request, pk):
         "last_week": last_week,
         "completed_time": completed_time,
         "type": type,
-        "best_day": best
+        "best_day": best,
+        "current_user": current_user,
+        "observers": observers,
+        'owner': owner,
+        'comments': comments,
+        'new_comment': new_comment,
+        'comment_form': comment_form,
+        "request": the_requeset,
         }
     return render(request, 'core/habit_detail.html', context)
 
+
+#----------------------------------------------TRACKER VIEWS---------------------------------------------
 def list_tracker(request):
     trackers = Tracker.objects.order_by('date_completed')
 
@@ -156,3 +223,6 @@ def delete_tracker(request, pk):
     tracker = Tracker.objects.get(pk = pk)
     tracker.delete()
     return redirect('home')
+
+
+#----------------------------------------------COMMENT VIEWS---------------------------------------------

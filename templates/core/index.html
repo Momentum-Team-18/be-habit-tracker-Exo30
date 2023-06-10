@@ -18,5 +18,17 @@
 
 
 {% endfor %}
+<div class="observing">
+    <h2>Friends Habits</h2>
+    {% for observer in observers %}
+    
+        {% if observer.good_or_bad == "Good" %}
+            <a class="habit" href="{% url 'habit_detail' observer.id %}"><button class="habit-button">{{observer}}</button></a>
+        {% else %}
+            <a class="habit bad-habit" href="{% url 'habit_detail' observer.id %}"><button class="habit-button bad-habit-button">{{observer}}</button></a>
+        {% endif %}
+    {% endfor %}
+</div>
+
 </div>
 {% endblock %}
