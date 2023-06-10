@@ -18,16 +18,21 @@ class Habit(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, null=True)
 
     HOURS = 'HR'
-    DAYS = "TD"
+    DAYS = "Day"
+    habit_choices = [
+        ("Good", "Starting A Good Habit"),
+        ("Bad", "Ending A Bad Habit"),
+    ]
     TYPE_CHOICES = [
         (HOURS, 'Hours a day'),
         (DAYS, 'Times a day'),
     ]
     name = models.CharField(max_length=30)
-    type = models.CharField(max_length=2, choices=TYPE_CHOICES, default=DAYS,)
+    type = models.CharField(max_length=20, choices=TYPE_CHOICES, default=DAYS,)
     hours = models.IntegerField(default=0)
     target = models.IntegerField(default=False)
     done_today = models.BooleanField(null=True, default=False)
+    good_or_bad = models.CharField(max_length=50, choices=habit_choices, default="Good")
 
 
     def __str__(self):
@@ -48,3 +53,8 @@ class Tracker(models.Model):
     
     def __str__(self):
         return self.habit
+    
+    def goal_num(self):
+        result = 0
+        result += int(self.date_completed)
+        return result

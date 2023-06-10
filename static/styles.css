@@ -36,10 +36,10 @@ justify-content: space-between;
     transition-delay: 2s;
 }
 
-.habit-button, .add_habit_button{
+.habit-button, .add_habit_button, .tracker_detail_button, .edit_button, .delete_button, .add_tracker_button {
     font-weight: bold;
     font-size: larger;
-    background-color: pink;
+    background-color: greenyellow;
     border: none;
     min-width: fit-content;
     min-height: fit-content;
@@ -48,11 +48,42 @@ justify-content: space-between;
     transition: all 0.33s ease-out;
 }
 
-.add_habit_button{
-    background-color: blue;
+.bad-habit-button{
+    background-color: pink;
 }
 
-.habit-button:hover, .add_habit_button:hover {
-    background-color: deeppink;
+.add_habit_button, .edit_button, .delete_button, .add_tracker_button {
+    background-color: rgb(106, 106, 247);
+    width: 6rem;
+    height: 3rem;
+    min-width: 9rem;
+}
+
+.add_habit_button:hover, .edit_button:hover, .delete_button:hover{
+    background-color: blue;
     transition: all 0.33s ease-in;
+}
+
+.add_tracker_button{
+    background-color: purple;
+}
+
+.habit-button:hover, .add_habit_button:hover, .tracker_detail_button:hover, .add_tracker_button:hover {
+    background-color: green;
+    transition: all 0.33s ease-in;
+}
+
+.bad-habit-button:hover{
+    background-color: deeppink;
+}
+
+/*---------------------Tracker Page-------------*/
+.tracker-div{
+    padding-bottom: 10px;
+
+}
+
+.tracker-list-div{
+    display: flex;
+    padding: 30px;
 }

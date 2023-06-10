@@ -2,14 +2,20 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import User, Habit, Tracker
 from django.contrib.auth.decorators import login_required
 from .forms import AddHabitForm, AddTrackerForm
+from datetime import date, timedelta
+import functools
 
 # Create your views here.
 @login_required
 def index(request):
-    habit = Habit.objects.filter(user=request.user).order_by('name')
+    typelist = []
+    habits = Habit.objects.filter(user=request.user).order_by('name')
+    for habit in habits:
+        typelist.append((habit.good_or_bad))
+    
     context = {
         'user': request.user,
-        'habit': habit
+        'habit': habits,
     }
     return render(request, 'core/index.html', context)
 
@@ -52,22 +58,67 @@ def edit_habit(request, pk):
             return redirect('habit_detail', habit.pk)
     return render(request, 'core/edit_habit.html', {'form': form})
 
+def best_day(days):
+    weekdays = {    
+        0: "Monday",
+        1: "Tuesday",
+        2: "Wednesday",
+        3: "Thursday",
+        4: "Friday",
+        5: "Saturday",
+        6: "Sunday"
+    }
+    weekdaysInt = {
+        0: 0,
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0,
+        6: 0,
+    }
+    for day in days:
+        day = day.weekday()
+        weekdaysInt[day] += 1
+    result = max(weekdaysInt, key = weekdaysInt.get)
+    return weekdays[result]
+
 
 def habit_detail(request, pk):
-    trackers = Tracker.objects.all()
     habit = get_object_or_404(Habit, pk=pk)
-    return render(request, 'core/habit_detail.html', {'habit': habit, "trackers": trackers})
+    trackers = Tracker.objects.filter(habit_id = habit).order_by("-date_completed")
+    completed_time = 0
+    type = habit.type
+    days = []
+    for tracker in trackers:
+        completed_time += tracker.goal_status
+        days.append(tracker.date_completed)
+    current_date = date.today()
+    last_week = current_date - timedelta(days=6)
+    best = best_day(days)
+    context = {
+        'habit': habit, 
+        "trackers": trackers,
+        "current_date": current_date,
+        "last_week": last_week,
+        "completed_time": completed_time,
+        "type": type,
+        "best_day": best
+        }
+    return render(request, 'core/habit_detail.html', context)
 
 def list_tracker(request):
-    trackers = Tracker.objects.all()
+    trackers = Tracker.objects.order_by('date_completed')
+
     return render(request, 'core/habit_detail.html', {'trackers': trackers})
 
 def tracker_detail(request, pk):
     tracker = get_object_or_404(Tracker, pk=pk)
+
     context = {
         "tracker": tracker,
         "entry_date": tracker.date_completed,
-        "result": tracker.goal_status
+        "result": tracker.goal_status,
     }
     return render(request, 'core/tracker_detail.html', context)
 

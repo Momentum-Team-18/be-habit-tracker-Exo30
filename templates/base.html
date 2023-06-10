@@ -7,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
+    <!--canvas id="chart" width="500" height="500"></canvas!-->
     {% endblock %}
     {% block title %}
     <title>Document</title>
@@ -15,7 +17,7 @@
 <body>
     <header>
         <a class="logo" href="{% url 'home' %}"><img src="../images/pic.jpg"></a>
-        <div class="title"><h1>Habit B Gone!</h1></div>
+        <div class="title"><h1>Habit Maker</h1></div>
         <a class="account_button" href="{% url 'account_detail' %}"><h2>account</h2></a>
     </header>
     <div class="block-div">

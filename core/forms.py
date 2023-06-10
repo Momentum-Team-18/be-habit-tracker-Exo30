@@ -5,8 +5,8 @@ from django.utils import timezone
 class AddHabitForm(forms.ModelForm):
     class Meta:
         model = Habit
-        fields = ['name', 'type', 'hours', 'done_today']
-        labels = {'name': 'Habit Name', 'type': 'Once per day habit, or a hours per day'}
+        fields = ['name', 'good_or_bad', 'hours']
+        labels = {'name': 'Habit Name', 'type': 'Once per day habit, or a hours per day', 'hours': 'Total Hours Goal (leave 0 for bad habit)'}
         #if (Habit.done_today == True):
             #widgets = {'hours': forms.HiddenInput()}
             

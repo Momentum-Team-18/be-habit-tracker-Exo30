@@ -9,7 +9,14 @@
 <a class="add_habit" href="{% url 'add_habit' %}"><button class="add_habit_button">Add New Habit</button></a>
 <div class="habit_box">
 {% for habit in habit %}
+
+{% if habit.good_or_bad == "Good" %}
 <a class="habit" href="{% url 'habit_detail' habit.id %}"><button class="habit-button">{{habit}}</button></a>
+{% else %}
+<a class="habit bad-habit" href="{% url 'habit_detail' habit.id %}"><button class="habit-button bad-habit-button">{{habit}}</button></a>
+{% endif %}
+
+
 {% endfor %}
 </div>
 {% endblock %}
