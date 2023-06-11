@@ -32,5 +32,7 @@ urlpatterns = [
     path('habit_detail/<int:pk>/tracker_detail/', views.tracker_detail, name="tracker_detail"),
     path('account_detail', views.account_detail, name="account_detail"),
     path('habit_detail/<int:pk>/add_observer', views.add_observer, name="add_observer"),
-    path('delete_observer', views.delete_observer, name="delete_observer")
+    path('delete_observer', views.delete_observer, name="delete_observer"),
+    path('no_permission', views.no_permission, name="no_permission"),
+    path("habit_detail/<int:pk>/tracker_chart", views.tracker_chart, name="tracker_chart")
 ]

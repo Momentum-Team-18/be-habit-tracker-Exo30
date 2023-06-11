@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
+{{req}}
+{{habit.user_id}}
 <form method="POST">
     {% csrf_token %}
     {{ form.as_p }}

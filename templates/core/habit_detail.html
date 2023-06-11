@@ -1,7 +1,28 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block meta %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.js"
+integrity="sha256DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM="
+crossorigin="anonymous">
+</script>
+<script type = "text/JavaScript" src = " https://MomentJS.com/downloads/moment.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+
+{% endblock %}
+
 {% block content %}
 
 
+{{hab}}
+{{organized}}
+
+<canvas id="myChart" style="width:800%;max-width:800px"></canvas>
+
+
+
+{% if current_username.username == observers or current_user == owner %}
 <h2 class="habit-name">{{habit.name}} Habit</h2>
 {% if current_user == owner %}
     <div class="habit_button_div">
@@ -21,10 +42,21 @@
 
 {% endif %}
 
+<!--canvas id="chart" width="500" height="500"></canvas-->
 
     <div class="tracker-div">
         {% if current_user == owner %}
         <a href="{% url 'add_tracker' habit.pk %}"><button class="add_tracker_button">Add Tracker</button></a>
+        {% if missing %}
+        <h2>It looks like you're missing entries for some recent dates: Click the date button to add them!</h2>
+        {% for miss in missing %}
+            {% if miss >= last_week %}
+            <a href="{% url 'add_tracker' habit.pk %}"><button class='tracker_detail_button'>{{ miss|date:"l" }}</button></a>
+            {% else %}
+            <a href="{% url 'add_tracker' habit.pk %}"><button class='tracker_detail_button'>{{ miss }}</button></a>
+            {% endif %}
+        {% endfor %}
+        {% endif %}
         {% endif %}
         <div class="tracker-list-div">
             {% for tracker in trackers %}
@@ -76,5 +108,66 @@
     {% endif %}
 </div>
 
-
+{% else %}
+<h2>Sorry! You don't have permission to view this page!</h2>
+{% endif %}
 {% endblock %}
+
+
+{%block scripts%}
+<script>
+
+
+    
+$(document).ready(function(){
+    var ctx = document.getElementById("myChart").getContext("2d");
+
+var myChart = new Chart(ctx, {
+  type: 'line',
+  options: {
+    scales: {
+      xAxes: [{
+        type: 'time',
+      }]
+    }
+  },
+  data: {
+    labels: ["2015-03-15T13:03:00Z", "2015-03-25T13:02:00Z", "2015-04-25T14:12:00Z"],
+    datasets: [{
+      label: 'Demo',
+      data: [{
+          t: '2015-03-15T13:03:00Z',
+          y: 12
+        },
+        {
+          t: '2015-03-25T13:02:00Z',
+          y: 21
+        },
+        {
+          t: '2015-04-25T14:12:00Z',
+          y: 32
+        }
+      ],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderWidth: 1
+    }]
+  }
+});
+    });
+    </script>
+{%endblock%}

@@ -41,6 +41,7 @@ class Habit(models.Model):
     
 class Tracker(models.Model):
     habit = models.ForeignKey(to=Habit, on_delete=models.CASCADE, null= True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     date_completed = models.DateField()
     goal_status = models.IntegerField(null=True)
 
@@ -63,6 +64,7 @@ class Tracker(models.Model):
 
 class Comment(models.Model):
     habit = models.ForeignKey(Habit,on_delete=models.CASCADE,related_name='comments')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=80, blank=True)
     email = models.EmailField(blank=True)
     body = models.TextField()

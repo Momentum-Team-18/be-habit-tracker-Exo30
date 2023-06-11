@@ -2,13 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {% block meta %}
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'styles.css' %}">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
-    <!--canvas id="chart" width="500" height="500"></canvas!-->
+    {% block meta %}
     {% endblock %}
     {% block title %}
     <title>Document</title>
@@ -21,6 +19,8 @@
         <a class="account_button" href="{% url 'account_detail' %}"><h2>account</h2></a>
     </header>
     <div class="block-div">
+        {% block scripts %}
+        {% endblock %}
         {% block content %}
         {% endblock %}
     </div>
