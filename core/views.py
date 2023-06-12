@@ -6,6 +6,7 @@ from datetime import date, timedelta, datetime
 from django.http import JsonResponse
 from django.db.models.functions import ExtractYear, ExtractMonth
 from utils.charts import months, colorPrimary, colorSuccess, colorDanger, generate_color_palette
+from json import dumps
 
 
 alert = None
@@ -173,6 +174,7 @@ def habit_detail(request, pk):
     current_user = request.user.id
     current_user_name = request.user
     habit = get_object_or_404(Habit, pk=pk)
+    breakpoint()
     observers = habit.observers
     if habit.user_id == current_user or request.user.username == observers:
 
@@ -247,7 +249,8 @@ def habit_detail(request, pk):
             'comment_form': comment_form,
             "request": the_requeset,
             "missing": recent_missing_tracker_days,
-            "data": data,
+            "data": dumps(data),
+            "habi": dumps(habit_date_data),
             "hab": habit_date_data,
             'organized': organized,
             }

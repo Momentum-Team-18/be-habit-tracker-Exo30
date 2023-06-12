@@ -14,14 +14,7 @@ crossorigin="anonymous">
 
 {% block content %}
 
-
-{{hab}}
-{{organized}}
-
-<canvas id="myChart" style="width:800%;max-width:800px"></canvas>
-
-
-
+<h2>{{ current_username }}</h2>
 {% if current_username.username == observers or current_user == owner %}
 <h2 class="habit-name">{{habit.name}} Habit</h2>
 {% if current_user == owner %}
@@ -41,8 +34,8 @@ crossorigin="anonymous">
     <p>It seems you do this habit most often on {{best_day}}s</p>
 
 {% endif %}
+<canvas id="myChart" style="width:800%;max-width:800px"></canvas>
 
-<!--canvas id="chart" width="500" height="500"></canvas-->
 
     <div class="tracker-div">
         {% if current_user == owner %}
@@ -116,9 +109,18 @@ crossorigin="anonymous">
 
 {%block scripts%}
 <script>
+var data = JSON.parse("{{habi|escapejs}}")
+let dateFormater = function(dates){
+    result = []
+    for (date in dates){
+        moment(date).format('MM-DD-YYYY HH:mm:ss')
+
+    }
+    return result
+}
 
 
-    
+
 $(document).ready(function(){
     var ctx = document.getElementById("myChart").getContext("2d");
 

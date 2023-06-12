@@ -33,7 +33,7 @@ class Habit(models.Model):
     target = models.IntegerField(default=False)
     done_today = models.BooleanField(null=True, default=False)
     good_or_bad = models.CharField(max_length=50, choices=habit_choices, default="Good")
-    observers = models.CharField(max_length=50, null=True, blank=True)
+    observers = models.ManyToManyField(to=User, related_name="habits_observing")
 
 
     def __str__(self):
